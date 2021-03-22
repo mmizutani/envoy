@@ -983,6 +983,7 @@ protobufs
 protoc
 protodoc
 protos
+protoschema
 protoxform
 proxied
 pseudocode

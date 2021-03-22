@@ -1,6 +1,7 @@
 load("@io_bazel_rules_go//proto:compiler.bzl", "go_proto_compiler")
 load("//:utils.bzl", "json_data")
 load(":repository_locations.bzl", "REPOSITORY_LOCATIONS_SPEC")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary")
 
 licenses(["notice"])  # Apache 2
 
@@ -21,4 +22,10 @@ go_proto_compiler(
 json_data(
     name = "repository_locations",
     data = REPOSITORY_LOCATIONS_SPEC,
+)
+
+go_binary(
+    name = "protoc-gen-jsonschema",
+    importpath = "github.com/chrusty/protoc-gen-jsonschema",
+    visibility = ["//visibility:public"],
 )
