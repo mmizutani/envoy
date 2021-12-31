@@ -4,7 +4,7 @@
 
 set -e
 
-source_venv "$BUILD_DIR"
+source_venv "${BUILD_DIR:?}"
 
 [[ -z "${SCHEMA_OUTPUT_DIR}" ]] && SCHEMA_OUTPUT_DIR=generated/schema
 [[ -z "${GENERATED_RST_DIR}" ]] && GENERATED_RST_DIR=generated/rst
@@ -12,7 +12,7 @@ source_venv "$BUILD_DIR"
 rm -rf "${SCHEMA_OUTPUT_DIR}"
 mkdir -p "${SCHEMA_OUTPUT_DIR}"
 
-EXTENSION_DB_PATH="/build/extensions/extension_db.json"
+EXTENSION_DB_PATH="./source/extensions/extensions_metadata.yaml"
 export EXTENSION_DB_PATH
 
 # This is for local RBE setup, should be no-op for builds without RBE setting in bazelrc files.

@@ -49,7 +49,7 @@ class ProtoSchemaDumper(object):
 
     @property
     def proto_dir(self):
-        return self.external_path("envoy_api_canonical")
+        return self.external_path("envoy_api")
 
     @property
     def jsonschema(self):
@@ -89,7 +89,7 @@ class ProtoSchemaDumper(object):
 
 def main():
     ProtoSchemaDumper().dump()
-    shutil.copytree("out", "/tmp/tmpout")
+    shutil.copytree("out", "/tmp/tmpout", dirs_exist_ok=True)
 
 
 if __name__ == '__main__':

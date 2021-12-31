@@ -1,10 +1,12 @@
 
 import json
 import os
+import pathlib
 import re
 import shutil
 import subprocess
 import sys
+import yaml
 
 
 sys.path = [p for p in sys.path if not p.endswith('bazel_tools')]
@@ -149,7 +151,13 @@ class ProtoSchemaMangler(object):
     def parse_extension_db(self):
         self.extensions = {}
         with open(self.extension_db_path) as f:
-            extension_db = json.load(f)
+            ext = pathlib.Path(self.extension_db_path).suffix
+            if ext == ".json":
+                extension_db = json.load(f)
+            elif ext == ".yaml":
+                extension_db = yaml.safe_load(f)
+            else:
+                raise Exception(f"Unsupported extension db file type: {ext}")
         for _k, _v in extension_db.items():
             for _cat in _v['categories']:
                 self.extensions.setdefault(_cat, []).append(_k)
@@ -211,8 +219,6 @@ class ProtoSchema(object):
 
 
 def main():
-    subprocess.run([
-        "./tools/extensions/generate_extension_db"])
     subprocess.run(["./tools/protoschema/index_extensions"])
     ProtoSchema().generate()
 

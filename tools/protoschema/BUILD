@@ -1,4 +1,5 @@
 load("@rules_python//python:defs.bzl", "py_binary")
+load("@base_pip3//:requirements.bzl", "requirement")
 load("//bazel:envoy_build_system.bzl", "envoy_package", "envoy_proto_library")
 
 licenses(["notice"])  # Apache 2
@@ -21,7 +22,7 @@ py_binary(
         "@com_google_googleapis//google/rpc:status_proto",
         "@com_google_protobuf//:protoc",
         "@com_google_protobuf//:well_known_protos",
-        "@envoy_api_canonical//:v3_protos",
+        "@envoy_api//:v3_protos",
         "@opencensus_proto//opencensus/proto/trace/v1:trace_proto",
         "@prometheus_metrics_model//:client_model",
     ],
@@ -47,7 +48,8 @@ py_binary(
     python_version = "PY3",
     srcs_version = "PY3",
     data = [
-        "//tools/extensions:generate_extension_db",
+        "//source/extensions:extensions_metadata.yaml",
         ":index_extensions",
+        requirement("envoy.base.utils"),
     ],
 )
