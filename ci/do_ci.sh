@@ -481,6 +481,19 @@ elif [[ "$CI_TARGET" == "tooling" ]]; then
   echo "dependency validate_test..."
   "${ENVOY_SRCDIR}"/tools/dependency/validate_test.py
 
+  bazel run "${BAZEL_BUILD_OPTIONS[@]}" //tools/testing:pytest_python_pytest -- --cov-collect  /tmp/.coverage-envoy
+  bazel run "${BAZEL_BUILD_OPTIONS[@]}" //tools/testing:pytest_python_coverage -- --cov-collect  /tmp/.coverage-envoy
+  bazel run "${BAZEL_BUILD_OPTIONS[@]}" //tools/base:pytest_checker -- --cov-collect  /tmp/.coverage-envoy
+  bazel run "${BAZEL_BUILD_OPTIONS[@]}" //tools/base:pytest_runner -- --cov-collect  /tmp/.coverage-envoy
+  bazel run "${BAZEL_BUILD_OPTIONS[@]}" //tools/base:pytest_utils -- --cov-collect  /tmp/.coverage-envoy
+  bazel run "${BAZEL_BUILD_OPTIONS[@]}" //tools/code_format:pytest_python_check -- --cov-collect  /tmp/.coverage-envoy
+  bazel run "${BAZEL_BUILD_OPTIONS[@]}" //tools/dependency:pytest_pip_check -- --cov-collect  /tmp/.coverage-envoy
+  bazel run "${BAZEL_BUILD_OPTIONS[@]}" //tools/testing:python_coverage -- --fail-under=95 /tmp/.coverage-envoy /source/generated/tooling
+
+  exit 0
+elif [[ "$CI_TARGET" == "schema" ]]; then
+  echo "generating schema..."
+  docs/build-schema.sh
   exit 0
 elif [[ "$CI_TARGET" == "verify_examples" ]]; then
   run_ci_verify "*" "wasm-cc|win32-front-proxy"
